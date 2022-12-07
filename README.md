@@ -144,3 +144,36 @@ ORDER BY e.pickup_point_id
 23 Record(employee='Roka Sanchez', pickup_point_id=8, adress='Ligovsky 68')
 24 Record(employee='Terese Tarski', pickup_point_id=8, adress='Ligovsky 68')
 ```
+
+## 7. Посмотреть текущие статусы заказов определенного клиента
+
+```sql
+SELECT o.client_id, d.order_id, ds.name as status
+FROM orders1 o
+INNER JOIN join delivery d on o.id=d.order_id
+INNER JOIN delivery_status ds on d.status=ds.id
+WHERE d.if_current = 1 AND o.client_id = 7
+ORDER BY d.order_id
+```
+# Результат
+```
+0 Record(client_id=7, order_id=1, status='transferred to the delivery service')
+1 Record(client_id=7, order_id=16, status='transferred to the delivery service')
+2 Record(client_id=7, order_id=24, status='generated')
+3 Record(client_id=7, order_id=45, status='generated')
+```
+
+## 8. Найти поставщика, который поставляет больше всего видов товаров
+
+```sql
+SELECT s.id, s.company_name, count(p.id) as product_quantity
+FROM suppliers s
+INNER JOIN products p on s.id=p.supplier_id
+GROUP BY s.id, s.company_name
+ORDER BY product_quantity desc
+LIMIT 1
+```
+# Результат
+```
+0 Record(id=7, company_name='Maxidom', product_quantity=16)
+```
