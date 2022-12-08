@@ -1,5 +1,5 @@
 # Интернет-магазин строительных материалов
-![drawSQL-export-2022-12-06_16_52](https://user-images.githubusercontent.com/115698405/205959050-ed788fce-13ab-4927-a90c-fa73d1fd63d6.png)
+![drawSQL-export-2022-12-08_15_59](https://user-images.githubusercontent.com/115698405/206453064-638fd89a-b380-477b-8378-037ffa236c90.png)
 # Запросы
 ## 1. Tоп 5 клиентов, которые потратили больше всего денег в магазине
 
@@ -86,24 +86,26 @@ LIMIT 1
 ## 5. Топ популярных товаров для категории
 
 ```sql
-SELECT cat.id, p.name, p.sold
-FROM products p
-INNER JOIN categories cat on p.category_id=cat.id
-WHERE cat.id = 8
-GROUP BY cat.id, p.name, p.sold
-ORDER BY p.sold desc
+SELECT cat.id, p.name, count(sh.product_id) as sold
+FROM categories cat
+INNER JOIN products p on p.category_id=cat.id
+INNER JOIN selling_history sh on p.id=sh.product_id
+WHERE cat.id = 1
+GROUP BY cat.id, p.name
+ORDER BY sold desc
 ```
 # Результат
 ```
-0 Record(id=8, name='cellular polycarbonate 8', sold=787)
-1 Record(id=8, name='cellular polycarbonate 3', sold=398)
-2 Record(id=8, name='watering hose', sold=250)
-3 Record(id=8, name='lawn mower', sold=200)
-4 Record(id=8, name='petrol mower', sold=108)
-5 Record(id=8, name='reinforced hose', sold=76)
-6 Record(id=8, name='watering device', sold=45)
-7 Record(id=8, name='brush cutter', sold=12)
-8 Record(id=8, name='motor pump', sold=0)
+0 Record(id=1, name='ceiling light scallop', sold=3)
+1 Record(id=1, name='park lantern down', sold=2)
+2 Record(id=1, name='incandescent lamp 60', sold=2)
+3 Record(id=1, name='ceiling light snowflake', sold=2)
+4 Record(id=1, name='halogen lamp', sold=1)
+5 Record(id=1, name='fluorescent lamp 95', sold=1)
+6 Record(id=1, name='ceiling light ball', sold=1)
+7 Record(id=1, name='lampshade СС', sold=1)
+8 Record(id=1, name='fluorescent lamp 75', sold=1)
+9 Record(id=1, name='lampshade А-99', sold=1)
 ```
 
 ## 6. Kакие сотрудники приписаны к какому пункту выдачи
